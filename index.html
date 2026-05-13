@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>SalesDash</title>
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="header-logo">
+            <h1>SalesDash</h1>
+            <p>Dashboard simples de vendas</p>
+        </div>
+
+        <div class="header-profile">
+            <img src="./assets/minha-foto.jpeg" alt="profile image">
+        </div>
+    </header>
+
+    <main id="main-section">
+        <section class="cards-area" aria-label="Resumo de vendas">
+
+            <div class="summary-card" data-metric="total-revenue">
+                <div class="summary-card-icon">
+                    <img src="./assets/investments.png" alt="icon investment">
+                </div>
+
+                <div class="summary-card-texts">
+                    <p class="title-summary-card">Faturamento Total</p>
+                    <p class="value-summary-card" id="total-revenue">0</p>
+                    <div class="summary-card-texts-bottom">
+                        <span class="material-symbols-outlined icon-up">trending_up</span>
+                        <p class="description-summary-card">12% vs mês anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card" data-metric="total-sales">
+                <div class="summary-card-icon">
+                    <img src="./assets/shopping-cart.png" alt="icon car">
+                </div>
+
+                <div class="summary-card-texts">
+                    <p class="title-summary-card">Total de Vendas</p>
+                    <p class="value-summary-card" id="total-sales">0</p>
+                    <div class="summary-card-texts-bottom">
+                        <span class="material-symbols-outlined icon-up">trending_up</span>
+                        <p class="description-summary-card">8% vs mês anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card" data-metric="average-ticket">
+                <div class="summary-card-icon">
+                    <img src="./assets/speedometer.png" alt="velocimeter icon">
+                </div>
+
+                <div class="summary-card-texts">
+                    <p class="title-summary-card">Ticket Medio</p>
+                    <p class="value-summary-card" id="average-ticket">0</p>
+                    <div class="summary-card-texts-bottom">
+                        <span class="material-symbols-outlined icon-down">trending_down</span>
+                        <p class="description-summary-card">12% vs mês anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card" data-metric="completed-sales">
+                <div class="summary-card-icon">
+                    <img src="./assets/check.png" alt="check icon">
+                </div>
+
+                <div class="summary-card-texts">
+                    <p class="title-summary-card">Vendas Concluídas</p>
+                    <p class="value-summary-card" id="completed-sales">0</p>
+                    <div class="summary-card-texts-bottom">
+                        <span class="material-symbols-outlined icon-check">done_all</span>
+                        <p class="description-summary-card">85.8% vs mês anterior</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters-area" aria-label="Filtros de Busca">
+            <h3>Filtros de Busca</h3>
+
+            <div class="filters-content">
+                <div class="search-filter">
+                    <span class="material-symbols-outlined search-icon">search</span>
+                    <input type="text" id="search-input" placeholder="Buscar por cliente ou produto...">
+                </div>
+
+                <div class="selects-filter">
+                    <div class="status-filter">
+                        <select name="status" id="status-select">
+                            <option value="todos-status">Todos os Status</option>
+                            <option value="concluida">Concluída</option>
+                            <option value="pendente">Pendente</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+
+                    <div class="category-filter">
+                        <select name="category" id="category-select">
+                            <option value="todas-categorias">Todas as Categorias</option>
+                            <option value="eletronicos">Eletrônicos</option>
+                            <option value="servicos">Serviços</option>
+                            <option value="acessorios">Acessórios</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="sales-area" aria-label="Vendas Recentes">
+            <div class="sales-header">
+                <h2 class="section-title">Vendas Recentes</h2>
+                <a href="#" class="sales-link">Ver todas</a>
+            </div>
+
+            <div class="sales-list">
+
+                <article class="sale-card sale-card--completed" data-status="concluida" data-category="eletronicos">
+                    <div class="sale-customer">
+                        <div class="sale-avatar">
+                            <span>RL</span>
+                        </div>
+
+                        <div class="sale-customer-info">
+                            <h4 class="sale-customer-name">Ricardo Lemos</h4>
+                            <p class="sale-product">Smartphone Galaxy S23</p>
+                        </div>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Categoria</p>
+                        <p class="sale-detail-value">Eletrônicos</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Valor</p>
+                        <p class="sale-detail-value sale-value">R$ 4.299,00</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Status</p>
+                        <span class="sale-status sale-status--completed">Concluída</span>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Data</p>
+                        <p class="sale-detail-value sale-date">12 Out, 2023</p>
+                    </div>
+                </article>
+
+                <article class="sale-card sale-card--pending" data-status="pendente" data-category="servicos">
+                    <div class="sale-customer">
+                        <div class="sale-avatar">
+                            <span>AM</span>
+                        </div>
+
+                        <div class="sale-customer-info">
+                            <h4 class="sale-customer-name">Ana Maria</h4>
+                            <p class="sale-product">Consultoria Semestral</p>
+                        </div>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Categoria</p>
+                        <p class="sale-detail-value">Serviços</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Valor</p>
+                        <p class="sale-detail-value sale-value">R$ 1.500,00</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Status</p>
+                        <span class="sale-status sale-status--pending">Pendente</span>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Data</p>
+                        <p class="sale-detail-value sale-date">11 Out, 2023</p>
+                    </div>
+                </article>
+
+                <article class="sale-card sale-card--canceled" data-status="cancelada" data-category="acessorios">
+                    <div class="sale-customer">
+                        <div class="sale-avatar">
+                            <span>JF</span>
+                        </div>
+
+                        <div class="sale-customer-info">
+                            <h4 class="sale-customer-name">João Ferreira</h4>
+                            <p class="sale-product">Fones de Ouvido Bluetooth</p>
+                        </div>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Categoria</p>
+                        <p class="sale-detail-value">Acessórios</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Valor</p>
+                        <p class="sale-detail-value sale-value">R$ 250,00</p>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Status</p>
+                        <span class="sale-status sale-status--canceled">Cancelada</span>
+                    </div>
+
+                    <div class="sale-detail">
+                        <p class="sale-detail-label">Data</p>
+                        <p class="sale-detail-value sale-date">10 Out, 2023</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script src="./script.js"></script>
+
+</body>
+
+</html>
