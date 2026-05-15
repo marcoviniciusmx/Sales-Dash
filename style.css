@@ -1,3 +1,8 @@
+/* =========================================================
+   RESET GLOBAL
+   Remove espaçamentos padrões e melhora o controle do layout
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -5,12 +10,59 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body,
 html {
     font-size: 16px;
     width: 100%;
-    height: 100dvh;
 }
+
+body {
+    width: 100%;
+    min-height: 100dvh;
+    background-color: #f8f8f8;
+    color: #1A1B23;
+}
+
+/* Garante que inputs, selects e botões herdem a fonte do projeto */
+input,
+select,
+button {
+    font: inherit;
+}
+
+
+/* =========================================================
+   VARIÁVEIS
+   Facilita manutenção de cores, sombras, bordas e espaçamentos
+========================================================= */
+
+:root {
+    --color-primary: rgb(31 78 216);
+    --color-text-dark: #1A1B23;
+    --color-text-medium: #434655;
+    --color-text-light: #56575e;
+
+    --color-bg-page: #f8f8f8;
+    --color-bg-card: #ffffff;
+    --color-border: rgb(211, 211, 211);
+
+    --color-success: #16a34a;
+    --color-warning: rgb(251 146 60);
+    --color-danger: rgb(239 68 68);
+
+    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.055);
+
+    --radius-sm: 10px;
+    --radius-md: 12px;
+    --radius-lg: 15px;
+
+    --container-padding: 30px;
+    --gap-default: 20px;
+}
+
+
+/* =========================================================
+   ÍCONES GERAIS
+========================================================= */
 
 .material-symbols-outlined {
     font-size: 15px;
@@ -21,25 +73,28 @@ html {
         'opsz' 24;
 }
 
-.icon-up {
-    color: #16a34a;
+.icon-up,
+.icon-check {
+    color: var(--color-success);
 }
 
 .icon-down {
     color: #ef4444;
 }
 
-.icon-check {
-    color: #16a34a;
-}
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 #header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
+    padding: 20px var(--container-padding);
     border-bottom: 1px solid rgb(228, 228, 228);
+    background-color: var(--color-bg-card);
 }
 
 .header-logo {
@@ -50,12 +105,12 @@ html {
 }
 
 .header-logo h1 {
-    color: rgb(31 78 216);
+    color: var(--color-primary);
     font-weight: 700;
 }
 
 .header-logo p {
-    color: rgb(67 70 85);
+    color: var(--color-text-medium);
     font-size: 14px;
     line-height: 20px;
     font-weight: 600;
@@ -67,46 +122,69 @@ html {
     justify-content: center;
     border-radius: 999px;
     border: 2px solid rgb(65 105 242);
+    flex-shrink: 0;
 }
 
 .header-profile img {
     width: 40px;
     height: 40px;
+    display: block;
+    object-fit: cover;
     border-radius: 999px;
 }
 
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
 #main-section {
     width: 100%;
-    margin: 10px 0;
-    padding: 20px 30px;
+    max-width: 1440px;
+    margin: 10px auto;
+    padding: 20px var(--container-padding);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: center;
 }
 
+
+/* =========================================================
+   CARDS DE RESUMO
+   Desktop/notebook: 4 colunas
+   Tablet: 2 colunas
+   Celular: 1 coluna
+========================================================= */
+
 .cards-area {
-    display: flex;
     width: 100%;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap-default);
     margin: 20px 0;
-    gap: 20px;
 }
 
-.cards-area .summary-card {
+.summary-card {
+    width: 100%;
+    min-height: 160px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    background-color: #ffff;
-    width: 100%;
+
+    background-color: var(--color-bg-card);
     padding: 25px 20px;
-    border-radius: 15px;
-    border: 1px solid rgb(211, 211, 211);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all .3s ease-in-out;
 }
 
-.summary-card .summary-card-icon {
+.summary-card:hover {
+    transform: scale(1.05);
+}
+
+.summary-card-icon {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -116,7 +194,7 @@ html {
 .summary-card-icon img {
     width: 45px;
     background-color: #a8d3fa;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 10px;
 }
 
@@ -131,23 +209,23 @@ html {
     text-align: start;
 }
 
-.summary-card-texts .title-summary-card {
-    color: #434655;
+.title-summary-card {
+    color: var(--color-text-medium);
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 12px
+    font-size: 12px;
 }
 
-.summary-card-texts .value-summary-card {
+.value-summary-card {
     font-size: 24px;
     line-height: 32px;
     letter-spacing: -0.01em;
     font-weight: 600;
-    color: #1A1B23
+    color: var(--color-text-dark);
 }
 
-.summary-card-texts .description-summary-card {
-    color: #16a34a;
+.description-summary-card {
+    color: var(--color-success);
     font-size: 12px;
     line-height: 16px;
     font-weight: 600;
@@ -164,6 +242,11 @@ html {
     font-size: 16px;
 }
 
+
+/* =========================================================
+   ÁREA DE FILTROS
+========================================================= */
+
 .filters-area {
     width: 100%;
     display: flex;
@@ -171,11 +254,15 @@ html {
     align-items: flex-start;
     justify-content: center;
     gap: 20px;
-    padding: 10px 25px;
+
+    padding: 20px 25px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
 }
 
 .filters-area h3 {
-    color: #1A1B23;
+    color: var(--color-text-dark);
     font-size: 1.5rem;
     line-height: 28px;
     font-weight: 600;
@@ -188,61 +275,484 @@ html {
     gap: 20px;
 }
 
+/* Container do input.
+   O position relative permite que o ícone fique preso dentro dele. */
 .search-filter {
+    position: relative;
+    width: 50%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 50%;
 }
 
+/* Ícone de lupa dentro do input */
 .search-filter span {
     position: absolute;
-    left: 5%;
+    left: 14px;
+    color: #6b7280;
+    pointer-events: none;
 }
 
 .search-filter input {
     width: 100%;
-    padding: 10px 40px;
+    min-height: 44px;
+    padding: 10px 16px 10px 42px;
+
     font-size: 1rem;
-    border-radius: 10px;
-    border: 1px solid rgb(211, 211, 211);
-    outline-color: rgb(31 78 216);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    outline-color: var(--color-primary);
+    background-color: #ffffff;
 }
 
+/* Container dos dois selects */
 .selects-filter {
+    width: 50%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 50%;
     gap: 20px;
 }
 
-.selects-filter .status-filter,
-.selects-filter .category-filter {
+.status-filter,
+.category-filter {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
 }
 
-.selects-filter .status-filter select,
-.selects-filter .category-filter select {
+.status-filter select,
+.category-filter select {
+    width: 100%;
+    min-height: 44px;
+
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+
+    cursor: pointer;
+    padding: 10px 46px 10px 14px;
+
+    font-size: .9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    outline-color: var(--color-primary);
+    background-color: #ffffff;
+
+    /* Seta personalizada do select */
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 14px;
+    background-position: right 20px center;
+}
 
-    /* controla a posição da seta */
-    background-position: right 22px center;
+/* Remove seta padrão no Edge/Internet Explorer antigo */
+select::-ms-expand {
+    display: none;
+}
 
-    cursor: pointer;
+
+/* =========================================================
+   ÁREA DE VENDAS
+========================================================= */
+
+.sales-area {
     width: 100%;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0;
+    text-align: start;
+}
+
+.sales-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0 20px 0;
+}
+
+.sales-header h2 {
+    color: var(--color-text-dark);
+    font-size: 1.5rem;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.sales-header button {
+    border: none;
+    font-size: .8rem;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: transparent;
+    cursor: pointer;
+}
+
+.sales-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 0;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   CARD DE VENDA
+   Desktop/notebook: informações em linha
+   Tablet/celular: informações quebram em colunas menores
+========================================================= */
+
+.sale-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 20px;
+
+    padding: 30px;
+    background-color: var(--color-bg-card);
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius-md);
+}
+
+.sale-card--completed {
+    border-left: 5px solid var(--color-success);
+}
+
+.sale-card--pending {
+    border-left: 5px solid var(--color-warning);
+}
+
+.sale-card--canceled {
+    border-left: 5px solid var(--color-danger);
+}
+
+
+/* =========================================================
+   CLIENTE DO CARD DE VENDA
+========================================================= */
+
+.sale-customer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    min-width: 0;
+}
+
+.sale-customer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2px;
+    min-width: 0;
+}
+
+.sale-customer-name {
     font-size: 1rem;
-    border-radius: 10px;
-    border: 1px solid rgb(211, 211, 211);
-    outline-color: rgb(31 78 216);
+    font-weight: 700;
+    color: #000000;
+}
+
+.sale-product {
+    font-size: 1rem;
+    color: var(--color-text-medium);
+}
+
+
+/* Avatar com tamanho fixo.
+   Isso impede que as siglas fiquem desproporcionais. */
+.sale-avatar {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(211, 211, 211);
+    border-radius: 50%;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.sale-avatar span {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    color: #3d3d3d;
+}
+
+.sale-card--completed .sale-avatar span {
+    color: blue;
+}
+
+
+/* =========================================================
+   DETALHES DO CARD DE VENDA
+========================================================= */
+
+.sale-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.sale-detail-label {
+    font-size: .8rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.sale-detail-value {
+    font-size: 1rem;
+    color: var(--color-text-dark);
+}
+
+.sale-value {
+    color: blue;
+    font-weight: 600;
+}
+
+.sale-date {
     font-size: .9rem;
+}
+
+.sale-detail-status {
+    gap: 10px;
+}
+
+
+/* =========================================================
+   STATUS DAS VENDAS
+========================================================= */
+
+.sale-status {
+    width: fit-content;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+.sale-status--completed {
+    color: rgb(14, 90, 42);
+    background-color: rgb(200, 250, 200);
+}
+
+.sale-status--pending {
+    color: rgba(224, 153, 21, 0.90);
+    background-color: rgb(252, 239, 166);
+}
+
+.sale-status--canceled {
+    color: rgba(224, 21, 21, 0.90);
+    background-color: rgb(252, 204, 204);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLET
+   Até 1024px
+========================================================= */
+
+@media (max-width: 1024px) {
+    :root {
+        --container-padding: 24px;
+    }
+
+    /* Cards de resumo ficam em 2 colunas */
+    .cards-area {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Filtros quebram em duas linhas:
+       input em cima, selects embaixo */
+    .filters-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-filter,
+    .selects-filter {
+        width: 100%;
+    }
+
+    /* Card de venda vira grid com 2 colunas */
+    .sale-card {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: flex-start;
+    }
+
+    /* Cliente ocupa a linha inteira */
+    .sale-customer {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR
+   Até 768px
+========================================================= */
+
+@media (max-width: 768px) {
+    :root {
+        --container-padding: 16px;
+        --gap-default: 16px;
+    }
+
+    #header {
+        padding: 16px var(--container-padding);
+    }
+
+    .header-logo h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-logo p {
+        font-size: 13px;
+    }
+
+    #main-section {
+        margin: 0 auto;
+        padding: 16px var(--container-padding);
+    }
+
+    /* Cards de resumo ficam um abaixo do outro */
+    .cards-area {
+        grid-template-columns: 1fr;
+        margin: 16px 0;
+    }
+
+    .summary-card {
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .filters-area {
+        padding: 18px;
+    }
+
+    .filters-area h3,
+    .sales-header h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Selects também ficam um abaixo do outro */
+    .selects-filter {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .search-filter input,
+    .status-filter select,
+    .category-filter select {
+        min-height: 46px;
+        font-size: .95rem;
+    }
+
+    .sales-header {
+        margin: 26px 0 12px 0;
+    }
+
+    .sales-list {
+        padding: 18px 0;
+    }
+
+    /* Card de venda em uma coluna */
+    .sale-card {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 22px 18px;
+    }
+
+    .sale-customer {
+        gap: 14px;
+    }
+
+    .sale-avatar {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+    }
+
+    .sale-product {
+        font-size: .9rem;
+    }
+
+    /* No mobile, cada detalhe vira uma linha mais organizada */
+    .sale-detail {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .sale-detail-status {
+        gap: 0;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR PEQUENO
+   Até 480px
+========================================================= */
+
+@media (max-width: 480px) {
+    #header {
+        gap: 12px;
+    }
+
+    .header-logo h1 {
+        font-size: 1.35rem;
+    }
+
+    .header-logo p {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .header-profile img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .filters-area {
+        padding: 16px;
+    }
+
+    .sales-header {
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .sale-card {
+        padding: 20px 16px;
+    }
+
+    .sale-customer-name {
+        font-size: .95rem;
+    }
+
+    .sale-detail {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .sale-detail-label {
+        font-size: .75rem;
+    }
+
+    .sale-detail-value,
+    .sale-product {
+        font-size: .9rem;
+    }
 }
