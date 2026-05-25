@@ -9,8 +9,11 @@ const vendas = [
         abreviacao: 'RL',
         produto: 'Smartphone Galaxy S23',
         categoria: 'eletronicos',
+        categoriaTexto: 'Eletrônicos',
         valor: 4299,
         status: 'concluida',
+        statusTexto: 'Concluída',
+        statusClasse: 'completed',
         data: '12 Out, 2025'
     },
     {
@@ -19,8 +22,11 @@ const vendas = [
         abreviacao: 'MV',
         produto: 'Consultoria Semestral',
         categoria: 'servicos',
+        categoriaTexto: 'Serviços',
         valor: 1500,
         status: 'pendente',
+        statusTexto: 'Pendente',
+        statusClasse: 'pending',
         data: '11 Out, 2025'
     },
     {
@@ -29,8 +35,11 @@ const vendas = [
         abreviacao: 'BP',
         produto: 'Fones de Ouvido Bluetooth',
         categoria: 'acessorios',
+        categoriaTexto: 'Acessórios',
         valor: 250,
         status: 'cancelada',
+        statusTexto: 'Cancelada',
+        statusClasse: 'canceled',
         data: '10 Out, 2025'
     },
     {
@@ -39,8 +48,11 @@ const vendas = [
         abreviacao: 'HM',
         produto: 'Apple iPhone 14 Pro Max',
         categoria: 'eletronicos',
+        categoriaTexto: 'Eletrônicos',
         valor: 3460,
         status: 'concluida',
+        statusTexto: 'Concluída',
+        statusClasse: 'completed',
         data: '16 Out, 2025'
     },
     {
@@ -49,8 +61,11 @@ const vendas = [
         abreviacao: 'JF',
         produto: 'Personal e Nutricionista',
         categoria: 'servicos',
+        categoriaTexto: 'Serviços',
         valor: 459,
         status: 'pendente',
+        statusTexto: 'Pendente',
+        statusClasse: 'pending',
         data: '15 Nov, 2025'
     },
     {
@@ -59,18 +74,60 @@ const vendas = [
         abreviacao: 'ML',
         produto: 'Mesa Retrátil',
         categoria: 'acessorios',
+        categoriaTexto: 'Acessórios',
         valor: 300,
         status: 'cancelada',
+        statusTexto: 'Cancelada',
+        statusClasse: 'canceled',
         data: '09 Dez, 2025'
     }
 ]
 
+
+
 const areaDasVendas = document.querySelector('.sales-list')
+const campoDeBusca = document.querySelector('#search-input')
+const filtroDeStatus = document.querySelector('#status-select')
+const filtroDeCategoria = document.querySelector('#category-select')
 
-const areaDosCard = vendas.map(venda => {
+const formatoReal = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+});
 
-    return `
-        <article class="sale-card" data-status="${venda.status}" data-category="${venda.categoria}">
+filtroDeStatus.addEventListener('change', () => {
+    const vendasFiltradas = filtrarVendas()
+
+    renderizarVendas(vendasFiltradas)
+})
+
+filtroDeCategoria.addEventListener('change', () => {
+    const categoriasFiltradas = filtrarVendas()
+
+    renderizarVendas(categoriasFiltradas)
+})
+
+const filtrarVendas = () => {
+    const statusSelecionado = filtroDeStatus.value
+    const categoriaSelecionada = filtroDeCategoria.value
+
+    const filtro = vendas.filter(venda => {
+        const combinaStatus = statusSelecionado === 'todos-status' || venda.status === statusSelecionado
+        const combinaCategoria = categoriaSelecionada === 'todas-categorias' || venda.categoria === categoriaSelecionada
+
+        if (combinaStatus && combinaCategoria) {
+            return true
+        }
+    })
+
+    return filtro
+}
+
+const renderizarVendas = (vendasFiltradas, categoriasFiltradas) => {
+
+    const areaDosCard = vendasFiltradas.map(venda => {
+        return `
+        <article class="sale-card sale-card--${venda.statusClasse}" data-status="${venda.status}" data-category="${venda.categoria}">
             <div class="sale-customer">
                 <div class="sale-avatar">
                     <span>${venda.abreviacao}</span>
@@ -84,17 +141,17 @@ const areaDosCard = vendas.map(venda => {
 
             <div class="sale-detail">
                 <p class="sale-detail-label">Categoria</p>
-                <p class="sale-detail-value">${venda.categoria}</p>
+                <p class="sale-detail-value">${venda.categoriaTexto}</p>
             </div>
 
             <div class="sale-detail">
                 <p class="sale-detail-label">Valor</p>
-                <p class="sale-detail-value sale-value">${venda.valor}</p>
+                <p class="sale-detail-value sale-value">${formatoReal.format(venda.valor)}</p>
             </div>
 
             <div class="sale-detail sale-detail-status">
                 <p class="sale-detail-label">Status</p>
-                <span class="sale-status">${venda.status}</span>
+                <span class="sale-status sale-status--${venda.statusClasse}">${venda.statusTexto}</span>
             </div>
 
             <div class="sale-detail">
@@ -102,7 +159,8 @@ const areaDosCard = vendas.map(venda => {
                 <p class="sale-detail-value sale-date">${venda.data}</p>
             </div>
         </article>
-    `
-})
+    `})
+    areaDasVendas.innerHTML = areaDosCard.join('')
+}
 
-areaDasVendas.innerHTML = areaDosCard.join('')
+renderizarVendas(vendas)
