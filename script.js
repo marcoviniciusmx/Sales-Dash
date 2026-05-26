@@ -107,15 +107,28 @@ filtroDeCategoria.addEventListener('change', () => {
     renderizarVendas(categoriasFiltradas)
 })
 
+campoDeBusca.addEventListener('input', () => {
+    const buscasFeitas = filtrarVendas()
+
+    renderizarVendas(buscasFeitas)
+})
+
 const filtrarVendas = () => {
     const statusSelecionado = filtroDeStatus.value
     const categoriaSelecionada = filtroDeCategoria.value
+    const termoBuscado = campoDeBusca.value.trim().toLowerCase()
 
     const filtro = vendas.filter(venda => {
         const combinaStatus = statusSelecionado === 'todos-status' || venda.status === statusSelecionado
         const combinaCategoria = categoriaSelecionada === 'todas-categorias' || venda.categoria === categoriaSelecionada
 
-        if (combinaStatus && combinaCategoria) {
+        let clienteTratado = venda.cliente.toLocaleLowerCase()
+        let produtoTratado = venda.produto.toLocaleLowerCase()
+
+
+        let combinaBusca = clienteTratado.includes(termoBuscado) || produtoTratado.includes(termoBuscado)
+
+        if (combinaStatus && combinaCategoria && combinaBusca) {
             return true
         }
     })
