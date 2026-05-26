@@ -15,7 +15,7 @@
 <br>
 
 <p align="center">
-  <img alt="Sales Dash Preview" src="./sales-dash-mockup.png" width="100%">
+  <img alt="Sales Dash Preview" src="./assets/sales-dash-mockup.png" width="100%">
 </p>
 
 ---
