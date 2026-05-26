@@ -83,97 +83,149 @@ const vendas = [
     }
 ]
 
-
-
 const areaDasVendas = document.querySelector('.sales-list')
 const campoDeBusca = document.querySelector('#search-input')
 const filtroDeStatus = document.querySelector('#status-select')
 const filtroDeCategoria = document.querySelector('#category-select')
 
+const receitaTotal = document.querySelector('#total-revenue')
+const vendasTotais = document.querySelector('#total-sales')
+const ticketMedio = document.querySelector('#average-ticket')
+const vendasConcluidas = document.querySelector('#completed-sales')
+
 const formatoReal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
-});
-
-filtroDeStatus.addEventListener('change', () => {
-    const vendasFiltradas = filtrarVendas()
-
-    renderizarVendas(vendasFiltradas)
 })
 
-filtroDeCategoria.addEventListener('change', () => {
-    const categoriasFiltradas = filtrarVendas()
-
-    renderizarVendas(categoriasFiltradas)
-})
-
-campoDeBusca.addEventListener('input', () => {
-    const buscasFeitas = filtrarVendas()
-
-    renderizarVendas(buscasFeitas)
-})
+const normalizarTexto = (texto) => {
+    return texto
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+}
 
 const filtrarVendas = () => {
     const statusSelecionado = filtroDeStatus.value
     const categoriaSelecionada = filtroDeCategoria.value
-    const termoBuscado = campoDeBusca.value.trim().toLowerCase()
+    const termoBuscado = normalizarTexto(campoDeBusca.value)
 
-    const filtro = vendas.filter(venda => {
-        const combinaStatus = statusSelecionado === 'todos-status' || venda.status === statusSelecionado
-        const combinaCategoria = categoriaSelecionada === 'todas-categorias' || venda.categoria === categoriaSelecionada
+    const vendasFiltradas = vendas.filter((venda) => {
+        const combinaStatus =
+            statusSelecionado === 'todos-status' ||
+            venda.status === statusSelecionado
 
-        let clienteTratado = venda.cliente.toLocaleLowerCase()
-        let produtoTratado = venda.produto.toLocaleLowerCase()
+        const combinaCategoria =
+            categoriaSelecionada === 'todas-categorias' ||
+            venda.categoria === categoriaSelecionada
 
+        const clienteTratado = normalizarTexto(venda.cliente)
+        const produtoTratado = normalizarTexto(venda.produto)
 
-        let combinaBusca = clienteTratado.includes(termoBuscado) || produtoTratado.includes(termoBuscado)
+        const combinaBusca =
+            clienteTratado.includes(termoBuscado) ||
+            produtoTratado.includes(termoBuscado)
 
-        if (combinaStatus && combinaCategoria && combinaBusca) {
-            return true
-        }
+        return combinaStatus && combinaCategoria && combinaBusca
     })
 
-    return filtro
+    return vendasFiltradas
 }
 
-const renderizarVendas = (vendasFiltradas, categoriasFiltradas) => {
+const calcularResumo = (lista) => {
+    const resumo = lista.reduce(
+        (resumo, venda) => {
+            resumo.totalDeVendas++
 
-    const areaDosCard = vendasFiltradas.map(venda => {
+            if (venda.status === 'concluida') {
+                resumo.faturamentoTotal += venda.valor
+                resumo.vendasConcluidas++
+            }
+
+            return resumo
+        },
+        {
+            faturamentoTotal: 0,
+            totalDeVendas: 0,
+            vendasConcluidas: 0,
+            ticketMedio: 0
+        }
+    )
+
+    resumo.ticketMedio =
+        resumo.vendasConcluidas > 0
+            ? resumo.faturamentoTotal / resumo.vendasConcluidas
+            : 0
+
+    return resumo
+}
+
+const atualizarCardsResumo = (resumo) => {
+    receitaTotal.textContent = formatoReal.format(resumo.faturamentoTotal)
+    vendasTotais.textContent = resumo.totalDeVendas
+    ticketMedio.textContent = formatoReal.format(resumo.ticketMedio)
+    vendasConcluidas.textContent = resumo.vendasConcluidas
+}
+
+const renderizarVendas = (lista) => {
+    if (lista.length === 0) {
+        areaDasVendas.innerHTML = `
+            <p class="empty-message">Nenhuma venda encontrada.</p>
+        `
+        return
+    }
+
+    const areaDosCards = lista.map((venda) => {
         return `
-        <article class="sale-card sale-card--${venda.statusClasse}" data-status="${venda.status}" data-category="${venda.categoria}">
-            <div class="sale-customer">
-                <div class="sale-avatar">
-                    <span>${venda.abreviacao}</span>
+            <article class="sale-card sale-card--${venda.statusClasse}" data-status="${venda.status}" data-category="${venda.categoria}">
+                <div class="sale-customer">
+                    <div class="sale-avatar">
+                        <span>${venda.abreviacao}</span>
+                    </div>
+
+                    <div class="sale-customer-info">
+                        <h4 class="sale-customer-name">${venda.cliente}</h4>
+                        <p class="sale-product">${venda.produto}</p>
+                    </div>
                 </div>
 
-                <div class="sale-customer-info">
-                    <h4 class="sale-customer-name">${venda.cliente}</h4>
-                    <p class="sale-product">${venda.produto}</p>
+                <div class="sale-detail">
+                    <p class="sale-detail-label">Categoria</p>
+                    <p class="sale-detail-value">${venda.categoriaTexto}</p>
                 </div>
-            </div>
 
-            <div class="sale-detail">
-                <p class="sale-detail-label">Categoria</p>
-                <p class="sale-detail-value">${venda.categoriaTexto}</p>
-            </div>
+                <div class="sale-detail">
+                    <p class="sale-detail-label">Valor</p>
+                    <p class="sale-detail-value sale-value">${formatoReal.format(venda.valor)}</p>
+                </div>
 
-            <div class="sale-detail">
-                <p class="sale-detail-label">Valor</p>
-                <p class="sale-detail-value sale-value">${formatoReal.format(venda.valor)}</p>
-            </div>
+                <div class="sale-detail sale-detail-status">
+                    <p class="sale-detail-label">Status</p>
+                    <span class="sale-status sale-status--${venda.statusClasse}">${venda.statusTexto}</span>
+                </div>
 
-            <div class="sale-detail sale-detail-status">
-                <p class="sale-detail-label">Status</p>
-                <span class="sale-status sale-status--${venda.statusClasse}">${venda.statusTexto}</span>
-            </div>
+                <div class="sale-detail">
+                    <p class="sale-detail-label">Data</p>
+                    <p class="sale-detail-value sale-date">${venda.data}</p>
+                </div>
+            </article>
+        `
+    })
 
-            <div class="sale-detail">
-                <p class="sale-detail-label">Data</p>
-                <p class="sale-detail-value sale-date">${venda.data}</p>
-            </div>
-        </article>
-    `})
-    areaDasVendas.innerHTML = areaDosCard.join('')
+    areaDasVendas.innerHTML = areaDosCards.join('')
 }
 
-renderizarVendas(vendas)
+const atualizarDashboard = () => {
+    const vendasFiltradas = filtrarVendas()
+    const resumo = calcularResumo(vendasFiltradas)
+
+    renderizarVendas(vendasFiltradas)
+    atualizarCardsResumo(resumo)
+}
+
+filtroDeStatus.addEventListener('change', atualizarDashboard)
+filtroDeCategoria.addEventListener('change', atualizarDashboard)
+campoDeBusca.addEventListener('input', atualizarDashboard)
+
+atualizarDashboard()
